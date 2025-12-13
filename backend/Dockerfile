@@ -1,16 +1,12 @@
-# Use an official Node.js runtime as a parent image
-FROM node:22-alpine3.19
+FROM oven/bun:latest
+WORKDIR /app
 
-# Set the working directory in the container
-WORKDIR /usr/app
+COPY . .
+RUN bun install
+COPY prisma ./prisma
+RUN bunx prisma generate
 
-COPY package*.json ./
-
-# Install app dependencies
-RUN npm install
-
-# Expose the port the app runs on
+COPY . .
 EXPOSE 6969
 
-# Define the command to run the app
-CMD ["npm", "run" , "start"]
+CMD ["sh", "-c", "bunx prisma migrate deploy && bun src/app.ts"]

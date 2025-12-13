@@ -1,23 +1,15 @@
 services:
-  mongo:
-    image: mongo
-    restart: always
-    ports:
-      - 27017:27017
-    
-  frontend:
-    build: 
-      context: ./frontend
-      dockerfile: Dockerfile
-
-    volumes:
-      - ./frontend:/usr/app
-
   backend:
-    build: 
-      context: ./backend
-      dockerfile: Dockerfile
-    depends_on:
-      - mongo
+    build: ./backend
+    ports:
+      - "6969:6969"
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: rgsn
+      POSTGRES_PASSWORD: rgsn
+      POSTGRES_DB: rgsn-db
     volumes:
-      - ./backend:/usr/app
+      - girlynetwork:/var/lib/postgresql
+volumes:
+  girlynetwork:
