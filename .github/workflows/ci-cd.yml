@@ -22,5 +22,5 @@ jobs:
           key: ${{secrets.SERVER_KEY}}
           script: |
             export DATABASE_URL=${{secrets.DATABASE_URL}}
-            cd /home/ubuntu/my-app
+            cd /home/ReactGirlySocialNetwork
             docker-compose up -d --build
