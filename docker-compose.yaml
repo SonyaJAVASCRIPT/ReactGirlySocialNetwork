@@ -3,6 +3,7 @@ services:
     build: ./backend
     ports:
       - "6969:6969"
+
   postgres:
     image: postgres:18
     environment:
@@ -11,5 +12,15 @@ services:
       POSTGRES_DB: rgsn-db
     volumes:
       - girlynetwork:/var/lib/postgresql
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    depends_on:
+      - backend
+
 volumes:
   girlynetwork:

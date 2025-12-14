@@ -23,4 +23,5 @@ jobs:
           script: |
             export DATABASE_URL=${{secrets.DATABASE_URL}}
             cd /home/ReactGirlySocialNetwork
-            docker-compose up -d --build
+            docker-compose build --no-cache
+            docker compose up -d
