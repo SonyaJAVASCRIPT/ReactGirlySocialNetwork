@@ -3,6 +3,8 @@ services:
     build: ./backend
     ports:
       - "6969:6969"
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:18
@@ -13,12 +15,10 @@ services:
     volumes:
       - girlynetwork:/var/lib/postgresql
 
-  nginx:
-    image: nginx:latest
+  frontend:
+    build: ./frontend
     ports:
       - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
     depends_on:
       - backend
 
