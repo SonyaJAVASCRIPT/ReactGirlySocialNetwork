@@ -1,21 +1,10 @@
 {
-  "name": "backend",
-  "version": "1.0.50",
   "scripts": {
-    "dev": "bun run --watch src/app.ts"
+    "start": "bun app.ts",
+    "dev": "bun --watch app.ts"
   },
   "dependencies": {
-    "@elysiajs/cookie": "^0.8.0",
-    "@elysiajs/jwt": "^1.4.0",
-    "@prisma/adapter-pg": "^7.1.0",
-    "@prisma/client": "^7.1.0",
-    "elysia": "latest",
-    "pg": "^8.16.3",
-    "prismabox": "^1.1.26"
-  },
-  "devDependencies": {
-    "bun-types": "latest",
-    "prisma": "^7.1.0"
-  },
-  "module": "src/index.js"
+    "express": "^5.2.1",
+    "zod": "^4.2.1"
+  }
 }
