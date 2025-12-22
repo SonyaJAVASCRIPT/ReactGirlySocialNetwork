@@ -1,25 +1,19 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router";
 import "./index.css";
-export function App() {
-  const [shmelusi, setShmelusi] = useState<string[]>([]);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setShmelusi((prev) => [...prev, "Привет всем шмелюсям!!"]);
-    }, 1000);
+import { HomeLayout } from "./routes/home/layout";
+import { Shmelusi } from "./routes/home/shmelusi";
 
-    return () => clearInterval(interval);
-  }, []);
+export function App() {
   return (
-    <main className="flex h-screen w-screen">
-      <nav className="w-36 bg-black text-white shrink-0"></nav>
-      <section className="flex w-full justify-center">
-        <div>
-          {shmelusi.map((shmelusi) => (
-            <div>{shmelusi}</div>
-          ))}
-        </div>
-      </section>
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route element={ <HomeLayout/> }>
+          <Route index element={<Link to="/shmelusi">Go to shmelusi</Link>}/>
+          <Route path="shmelusi" element={ <Shmelusi/> }/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
