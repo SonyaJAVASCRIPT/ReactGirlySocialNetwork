@@ -1,7 +1,8 @@
 import express, { Application } from "express";
 import { Controller } from "./Controller";
 import { Module } from "./Module";
-import { errorMiddleware } from "../src/Middlewares/Error.middleware";
+import { errorMiddleware } from "../Middlewares/errorMiddleware";
+import cookieParser from "cookie-parser";
 export class App {
   public express: Application;
   private port: number;
@@ -18,6 +19,7 @@ export class App {
   }
   private initMiddlewares() {
     this.express.use(express.json());
+    this.express.use(cookieParser());
     this.express.use(
       (
         err: any,

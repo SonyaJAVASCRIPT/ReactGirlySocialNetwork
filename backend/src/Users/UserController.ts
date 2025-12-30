@@ -1,11 +1,12 @@
 import { Application, Request, Response } from "express";
-import { Controller } from "../../core/Controller";
+import { Controller } from "../Core/Controller";
 import { UserService } from "./UserService";
 import { CreateUserDTO } from "./dto/createUser.dto";
-import { validateBody } from "../../utils/validateBody";
-import { InferBody } from "../../utils/inferBody";
-import { asyncHandler } from "../../utils/asyncHandler";
-import { authMiddleware } from "../Middlewares/Auth.middleware";
+import { validateBody } from "../Middlewares/validationMiddleware";
+import { InferBody } from "../Utils/inferBody";
+import { asyncHandler } from "../Utils/asyncHandler";
+import { authMiddleware } from "../Middlewares/authMiddleware";
+import { Unauthorized } from "../Utils/customError";
 export class UserController extends Controller {
   constructor(
     app: Application,
@@ -15,40 +16,18 @@ export class UserController extends Controller {
   }
 
   protected initRoutes(): void {
-    this.app.post(
-      "/api/user/signUp",
-      validateBody(CreateUserDTO),
-      asyncHandler(this.signUp.bind(this)),
-    );
-    this.app.post(
-      "/api/user/signIn",
-      validateBody(CreateUserDTO),
-      asyncHandler(this.signIn.bind(this)),
-    );
     this.app.get(
       "/api/user/me",
+      validateBody(CreateUserDTO),
       authMiddleware,
-      asyncHandler(this.getUserFromToken.bind(this)),
+      asyncHandler(this.getMe.bind(this)),
     );
   }
 
-  public async getUserFromToken(req: Request, res: Response) {
-    ``;
+  public async getMe(req: Request, res: Response) {
     if (!req.user) {
-      return res
-        .status(401)
-        .json({ success: false, error: { message: "Unauthorized" } });
+      throw Unauthorized;
     }
-
-    return res.json({
-      success: true,
-      data: req.user,
-    });
-  }
-  public async signUp(req: InferBody<typeof CreateUserDTO>, res: Response) {
-    return res.json(await this.userService.signUp(req.body));
-  }
-  public async signIn(req: InferBody<typeof CreateUserDTO>, res: Response) {
-    return res.json(await this.userService.signIn(req.body));
+    return res.json(this.userService.getMe(req.user));
   }
 }

@@ -1,4 +1,5 @@
 backend/node_modules
 backend/package-lock.json
-backend/src/generated
+backend/prisma/generated
 backend/.env
+node_modules

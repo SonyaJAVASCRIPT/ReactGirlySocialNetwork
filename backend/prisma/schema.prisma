@@ -2,7 +2,7 @@ generator client {
   provider   = "prisma-client"
   output     = "./generated"
   engineType = "client"
-  runtime    = "bun"
+  runtime    = "nodejs"
 }
 
 datasource db {
@@ -10,9 +10,30 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  username  String   @unique
-  email     String   @unique
+  id        String    @id @default(uuid())
+  username  String    @unique
+  email     String    @unique
   password  String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  sessions  Session[]
+}
+
+model Session {
+  id            String         @id @default(uuid())
+  user          User           @relation(fields: [userId], references: [id])
+  userId        String
+  origin        String         @default("Unknown")
+  createdAt     DateTime       @default(now())
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id              String   @id @default(uuid())
+  token           String   @unique
+  session         Session? @relation(fields: [sessionId], references: [id])
+  sessionId       String?
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
+  revoked         Boolean  @default(false)
+  replacedByToken String?
 }

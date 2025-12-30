@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import { CustomError } from "../../utils/customError";
-import { jwtPayloadType } from "../Auth/jwtPayload.type";
-import { AuthService } from "../Auth/AuthService";
+import { CustomError } from "../Utils/customError";
+import { TokenService } from "../Auth/TokenService";
 
+const tokenService = new TokenService();
 export const authMiddleware = async (
   req: Request,
   res: Response,
@@ -15,11 +14,10 @@ export const authMiddleware = async (
       throw new CustomError("No token provided", 401, "NO_TOKEN");
     }
     const token = authHeader.split(" ")[1];
-    const authService = new AuthService();
     if (!token) {
       throw new CustomError("No token provided", 401, "NO_TOKEN");
     }
-    const decoded = await authService.verifyToken(token);
+    const decoded = await tokenService.verifyToken(token);
     req.user = decoded;
     next();
   } catch (err: any) {
