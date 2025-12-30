@@ -1,6 +1,7 @@
-import { App } from "./core/Application";
-import { UserModule } from "./src/Users/UserModule";
+import { App } from "./src/Core/Application.ts";
+import { AuthModule } from "./src/Auth/AuthModule.ts";
+import { UserModule } from "./src/Users/UserModule.ts";
 
-const modules = [UserModule];
-const app = new App(modules, Number(process.env.PORT));
+const modules = [UserModule, AuthModule];
+const app = new App(modules, 6969);
 app.listen();

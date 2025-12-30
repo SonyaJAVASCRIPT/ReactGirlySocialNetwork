@@ -1,10 +1,12 @@
 import { Application, Request, Response } from "express";
-import { Controller } from "../../core/Controller";
+import { Controller } from "../Core/Controller";
 import { UserService } from "./UserService";
 import { CreateUserDTO } from "./dto/createUser.dto";
-import { validateBody } from "../../utils/validateBody";
-import { InferBody } from "../../utils/inferBody";
-
+import { validateBody } from "../Middlewares/validationMiddleware";
+import { InferBody } from "../Utils/inferBody";
+import { asyncHandler } from "../Utils/asyncHandler";
+import { authMiddleware } from "../Middlewares/authMiddleware";
+import { Unauthorized } from "../Utils/customError";
 export class UserController extends Controller {
   constructor(
     app: Application,
@@ -14,14 +16,18 @@ export class UserController extends Controller {
   }
 
   protected initRoutes(): void {
-    this.app.post(
-      "/api/users",
+    this.app.get(
+      "/api/user/me",
       validateBody(CreateUserDTO),
-      this.findAll.bind(this),
+      authMiddleware,
+      asyncHandler(this.getMe.bind(this)),
     );
   }
-  public findAll(req: InferBody<typeof CreateUserDTO>, res: Response) {
-    const body = req.body;
-    res.json(body);
+
+  public async getMe(req: Request, res: Response) {
+    if (!req.user) {
+      throw Unauthorized;
+    }
+    return res.json(this.userService.getMe(req.user));
   }
 }

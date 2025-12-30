@@ -12,6 +12,8 @@ services:
       POSTGRES_USER: rgsn
       POSTGRES_PASSWORD: rgsn
       POSTGRES_DB: rgsn-db
+    ports:
+      - "5432:5432"
     volumes:
       - girlynetwork:/var/lib/postgresql
 
