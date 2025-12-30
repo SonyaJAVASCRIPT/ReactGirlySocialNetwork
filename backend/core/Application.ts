@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import { Controller } from "./Controller";
 import { Module } from "./Module";
+import { errorMiddleware } from "../src/Middlewares/Error.middleware";
 export class App {
   public express: Application;
   private port: number;
@@ -13,6 +14,7 @@ export class App {
     this.port = port;
     this.initMiddlewares();
     this.initModules();
+    this.express.use(errorMiddleware);
   }
   private initMiddlewares() {
     this.express.use(express.json());

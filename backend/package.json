@@ -1,16 +1,23 @@
 {
   "scripts": {
-    "start": "bun app.ts",
-    "dev": "bun --watch app.ts"
+    "start": "npx tsx --env-file .env app.ts"
   },
   "dependencies": {
-    "@prisma/adapter-libsql": "^7.2.0",
+    "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.16.3",
     "zod": "^4.2.1"
   },
   "devDependencies": {
-    "prisma": "^7.2.0"
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/pg": "^8.16.0",
+    "prisma": "^7.2.0",
+    "tsx": "^4.21.0"
   }
 }
